@@ -5,6 +5,13 @@ from .models import Korisnik
 def home(request):
     return render(request,"korisnik/home.html",{})
 
+
+
+def adding(request,username):
+    objekat=Korisnik.objects.get(username=username)
+    objekat.stranica_set.create(link = request.POST['link'])
+    return HttpResponseRedirect(reverse('korisnik:logged',args=(username,)))
+
 def help(request):
     try:
         username = request.POST['username']
@@ -17,7 +24,9 @@ def help(request):
     return HttpResponseRedirect(reverse('korisnik:logged',args=(object.username,)))
 
 def logged(request,username):
-    return HttpResponse("Logovan korisnik "+ username)
+    objekat = Korisnik.objects.get(username =username)
+    return render(request,'korisnik/logovan.html',{'username':username,
+                                                   'objekat':objekat})
 
 def register(request):
     return render(request,"korisnik/registration.html",{})

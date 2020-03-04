@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{username}}</title>
+</head>
+<body>
+    {% for stranica in objekat.stranica_set.all %}
+    <a href={{stranica.link}}>{{stranica.link}}</a><br>
+
+    {%endfor%}
+    <br><br>
+    <form action="{% url 'korisnik:adding' username %}" method="post">
+        {% csrf_token %}
+        <label for="link"> Novi link</label>
+        <input type="text" id="link" name="link">
+        <input type="submit" value="Dodaj novi link"><br>
+    </form>
+</body>
+</html>

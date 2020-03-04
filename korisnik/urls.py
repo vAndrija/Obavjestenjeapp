@@ -9,5 +9,6 @@ urlpatterns = [
     path('logged/<str:username>/',views.logged,name= 'logged'),
     path('register/',views.register,name='register'),
     path('redirecting/',views.help,name = 'help'),
+    path('logged/<str:username>/adding',views.adding, name= 'adding'),
     path('redirecting./',views.helpRegister,name='helpRegister'),
 ]
