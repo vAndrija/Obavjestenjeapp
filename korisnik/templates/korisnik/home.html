@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<form action="{% url 'korisnik:help'%}" method="post">
+    {% csrf_token %}
+  <label for="username">Username:</label><br>
+  <input type="text" id="username" name="username"><br>
+  <label for="pwd">Password:</label><br>
+  <input type="password" id="pwd" name="pwd"><br><br>
+    <input type="submit" value="Prijavi se"><br>
+    <br>
+</form>
+<form action ="{% url 'korisnik:register' %}" method="post">
+    {%csrf_token%}
+    <input type="submit" value = "Registruj se">
+</form>
+</body>
+</html>
