@@ -20,11 +20,15 @@ def help(request):
             return HttpResponseRedirect(reverse('korisnik:home'))
     except(KeyError, Korisnik.DoesNotExist):
         return HttpResponseRedirect(reverse('korisnik:home'))
-    print("andrija")
+
     return HttpResponseRedirect(reverse('korisnik:logged',args=(object.username,)))
 
 def logged(request,username):
     objekat = Korisnik.objects.get(username =username)
+    try:
+        print(request.META['HTTP_REFERER'])
+    except:
+        return HttpResponseRedirect(reverse('korisnik:home'))
     return render(request,'korisnik/logovan.html',{'username':username,
                                                    'objekat':objekat})
 
