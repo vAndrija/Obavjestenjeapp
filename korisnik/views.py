@@ -1,7 +1,7 @@
 from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from django.urls import reverse
 # Create your views here.
-from .models import Korisnik
+from .models import Korisnik,Stranica
 def home(request):
     return render(request,"korisnik/home.html",{})
 
@@ -12,6 +12,22 @@ def adding(request,username):
     objekat.stranica_set.create(link = request.POST['link'])
     return HttpResponseRedirect(reverse('korisnik:logged',args=(username,)))
 
+
+def delatingRedirecting(request,username):
+    objekat = Korisnik.objects.get(username=username)
+    stranice = objekat.stranica_set.all
+    context = {
+        'objekat': objekat,
+        'stranice': stranice,
+        'username' : username,
+    }
+    return render(request,'korisnik/delating.html',context)
+
+def delatingLink(request,username):
+    link = request.POST['stranica']
+    objekat = Stranica.objects.get(link=link)
+    objekat.delete()
+    return HttpResponseRedirect(reverse('korisnik:logged',args=(username,)))
 def help(request):
     try:
         username = request.POST['username']
@@ -20,6 +36,7 @@ def help(request):
             return HttpResponseRedirect(reverse('korisnik:home'))
     except(KeyError, Korisnik.DoesNotExist):
         return HttpResponseRedirect(reverse('korisnik:home'))
+
 
     return HttpResponseRedirect(reverse('korisnik:logged',args=(object.username,)))
 

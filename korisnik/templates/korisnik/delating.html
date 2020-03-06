@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{objekat}}</title>
+</head>
+<body>
+    <form action ="{% url 'korisnik:delatingLink' username %}" method="post">
+        {%csrf_token%}
+        {% for link in stranice %}
+
+    <input type="radio" id="{{link}}" name = "stranica" value="{{link}}">
+    <label for = "{{link}}">{{link}}</label><br>
+
+    {%endfor%}
+        <input type="submit" value="Izbrisi link"><br>
+    </form>
+
+</body>
+</html>

@@ -16,3 +16,5 @@ class Korisnik(models.Model):
 class Stranica(models.Model):
     link = models.CharField(max_length=200,default = '')
     korisnik = models.ForeignKey(Korisnik,on_delete=models.CASCADE)
+    def __str__(self):
+        return "{}".format(self.link)

@@ -10,11 +10,16 @@
 
     {%endfor%}
     <br><br>
+    <form action="{% url 'korisnik:delatingRedirecting' username %}" method="get">
+        <input type = "submit" value = "Brisanje  postojeceg linka">
+    </form>
+    <br><br>
     <form action="{% url 'korisnik:adding' username %}" method="post">
         {% csrf_token %}
         <label for="link"> Novi link</label>
         <input type="text" id="link" name="link">
         <input type="submit" value="Dodaj novi link"><br>
     </form>
+
 </body>
 </html>
