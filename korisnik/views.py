@@ -1,15 +1,15 @@
 from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from django.urls import reverse
 # Create your views here.
-from .models import Korisnik,Stranica
+from .models import Korisnik,Stranica,Obavjestenje
 def home(request):
     return render(request,"korisnik/home.html",{})
-
 
 
 def adding(request,username):
     objekat=Korisnik.objects.get(username=username)
     objekat.stranica_set.create(link = request.POST['link'])
+
     return HttpResponseRedirect(reverse('korisnik:logged',args=(username,)))
 
 
@@ -46,6 +46,9 @@ def logged(request,username):
         print(request.META['HTTP_REFERER'])
     except:
         return HttpResponseRedirect(reverse('korisnik:home'))
+
+
+
     return render(request,'korisnik/logovan.html',{'username':username,
                                                    'objekat':objekat})
 

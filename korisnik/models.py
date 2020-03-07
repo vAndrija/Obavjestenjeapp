@@ -21,6 +21,8 @@ class Stranica(models.Model):
 DEFAULT_EXAM_ID = 1
 class Obavjestenje(models.Model):
     korisnik = models.ForeignKey(Korisnik, on_delete=models.CASCADE)
-    naziv = models.CharField(max_length=20)
-    sadrzaj = models.CharField(max_length=20)
-    pub_date = models.DateTimeField('vrijeme promjene')
+    naziv = models.CharField(max_length=100)
+    sadrzaj = models.CharField(max_length=100)
+    datum = models.DateTimeField('vrijeme promjene')
+    def __str__(self):
+        return "{}".format(self.naziv)

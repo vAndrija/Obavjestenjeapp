@@ -20,6 +20,15 @@
         <input type="text" id="link" name="link">
         <input type="submit" value="Dodaj novi link"><br>
     </form>
+    <h2>Obavjestenja</h2>
+    {% for obavjestenje in objekat.obavjestenje_set.all %}
+    <br>
+    <h3>{{obavjestenje.naziv}}</h3>
+    <h4>{{obavjestenje.datum}}</h4>
+    <p>{{obavjestenje.sadrzaj}}</p>
+    <br><br>
+    <hr>
 
+    {%endfor%}
 </body>
 </html>
