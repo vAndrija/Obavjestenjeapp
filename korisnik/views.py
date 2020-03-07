@@ -1,7 +1,31 @@
 from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from django.urls import reverse
+import requests
+from background_task import background
+from bs4 import BeautifulSoup
 # Create your views here.
 from .models import Korisnik,Stranica,Obavjestenje
+
+@background(schedule=10)
+def obavjestenje(link,username):
+    korisnik = Korisnik.objects.get(username =username)
+    try:
+        stranica = korisnik.stranica_set.get(link=link)
+    except:
+        return
+    res  =requests.get(stranica.link)
+    html_page = res.content
+    print(html_page)
+    if(stranica.staroStanje=='nista'):
+        stranica.staroStanje=html_page
+        stranica.save()
+        print("Inicijalo stanje")
+    elif(stranica.staroStanje!=html_page):
+        print("Doslo je do promjene")
+    else:
+        print("Nema promjena na sajtu")
+
+
 def home(request):
     return render(request,"korisnik/home.html",{})
 
@@ -9,6 +33,7 @@ def home(request):
 def adding(request,username):
     objekat=Korisnik.objects.get(username=username)
     objekat.stranica_set.create(link = request.POST['link'])
+    obavjestenje(request.POST['link'],username, schedule=5,repeat=10)
 
     return HttpResponseRedirect(reverse('korisnik:logged',args=(username,)))
 
