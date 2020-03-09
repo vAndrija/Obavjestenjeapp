@@ -1,30 +1,42 @@
 from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from django.urls import reverse
 import requests
+import urllib.request
 from background_task import background
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup,Comment
 # Create your views here.
 from .models import Korisnik,Stranica,Obavjestenje
 
+
+def tag_visible(element):
+    if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]']:
+        return False
+    if isinstance(element, Comment):
+        return False
+    return True
+
+
 @background(schedule=10)
 def obavjestenje(link,username):
-    korisnik = Korisnik.objects.get(username =username)
+    html = urllib.request.urlopen(link)
+    soup = BeautifulSoup(html, 'html.parser')
+    texts = soup.findAll(text=True)
+    visible_texts = filter(tag_visible, texts)
+    korisnik = Korisnik.objects.get(username=username)
+    tekst=u" ".join(t.strip() for t in visible_texts)
     try:
         stranica = korisnik.stranica_set.get(link=link)
     except:
         return
-    res  =requests.get(stranica.link)
-    html_page = res.content
-    print(html_page)
-    if(stranica.staroStanje=='nista'):
-        stranica.staroStanje=html_page
+    if (stranica.staroStanje == 'nista'):
+        stranica.staroStanje =tekst
         stranica.save()
+        print(tekst)
         print("Inicijalo stanje")
-    elif(stranica.staroStanje!=html_page):
+    elif (stranica.staroStanje != tekst):
         print("Doslo je do promjene")
     else:
         print("Nema promjena na sajtu")
-
 
 def home(request):
     return render(request,"korisnik/home.html",{})
