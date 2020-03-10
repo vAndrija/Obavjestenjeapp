@@ -1,5 +1,6 @@
 from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from django.urls import reverse
+from django.utils import timezone
 import requests
 import urllib.request
 from background_task import background
@@ -34,9 +35,8 @@ def obavjestenje(link,username):
         print(tekst)
         print("Inicijalo stanje")
     elif (stranica.staroStanje != tekst):
-        print("Doslo je do promjene")
-    else:
-        print("Nema promjena na sajtu")
+        korisnik.obavjestenje_set.create(naziv="Doslo je do promjene na sajtu",sadrzaj=link,datum=timezone.now())
+        return HttpResponseRedirect(reverse('korisnik:logged', args=(korisnik.username,)))
 
 def home(request):
     return render(request,"korisnik/home.html",{})

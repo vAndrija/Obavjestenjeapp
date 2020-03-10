@@ -3,10 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+
+    <style type="text/css">
+    .container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
 </head>
 <body>
+<div class = "container">
 <form action="{% url 'korisnik:help'%}" method="post">
     {% csrf_token %}
+
+
   <label for="username">Username:</label><br>
   <input type="text" id="username" name="username"><br>
   <label for="pwd">Password:</label><br>
@@ -18,5 +30,7 @@
     {%csrf_token%}
     <input type="submit" value = "Registruj se">
 </form>
+
+    </div>
 </body>
 </html>

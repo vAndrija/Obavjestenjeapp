@@ -19,7 +19,7 @@ class Stranica(models.Model):
     staroStanje = models.TextField(default='nista')
     def __str__(self):
         return "{}".format(self.link)
-DEFAULT_EXAM_ID = 1
+
 class Obavjestenje(models.Model):
     korisnik = models.ForeignKey(Korisnik, on_delete=models.CASCADE)
     naziv = models.CharField(max_length=100)
