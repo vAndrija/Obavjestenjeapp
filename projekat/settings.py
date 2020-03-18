@@ -25,7 +25,6 @@ SECRET_KEY = 'z00h5cddr*df6a^n^%kj@8t0xumtr2&h*d7svbxh8w6wx8082b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -51,6 +50,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+ALLOWED_HOSTS = []
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "andrijavojinovicpa@gmail.com"
+EMAIL_HOST_PASSWORD = "lozinka123.A"
 
 ROOT_URLCONF = 'projekat.urls'
 

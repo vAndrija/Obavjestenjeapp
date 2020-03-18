@@ -1,10 +1,11 @@
 from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
-import requests
 import urllib.request
 from background_task import background
 from bs4 import BeautifulSoup,Comment
+from django.core.mail import send_mail
+from django.conf import settings
 # Create your views here.
 from .models import Korisnik,Stranica,Obavjestenje
 
@@ -36,7 +37,13 @@ def obavjestenje(link,username):
         print("Inicijalo stanje")
     elif (stranica.staroStanje != tekst):
         korisnik.obavjestenje_set.create(naziv="Doslo je do promjene na sajtu",sadrzaj=link,datum=timezone.now())
-        return HttpResponseRedirect(reverse('korisnik:logged', args=(korisnik.username,)))
+        subject = 'Desila se promjena na sajtu'
+        message = ' {} '.format(link)
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = ['andrijavojnovicpa@gmail.com', ]
+        send_mail(subject, message, email_from, recipient_list)
+        print("prosao")
+
 
 def home(request):
     return render(request,"korisnik/home.html",{})
