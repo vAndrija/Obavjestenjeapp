@@ -12,6 +12,7 @@ gunicorn==20.0.4
 idna==2.9
 post==2019.4.13
 psycopg2==2.8.4
+psycopg2-binary==2.8.4
 public==2019.4.13
 pytz==2019.3
 query-string==2019.4.13
