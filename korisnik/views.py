@@ -33,16 +33,15 @@ def obavjestenje(link,username):
     if (stranica.staroStanje == 'nista'):
         stranica.staroStanje =tekst
         stranica.save()
-        print(tekst)
-        print("Inicijalo stanje")
+
     elif (stranica.staroStanje != tekst):
         korisnik.obavjestenje_set.create(naziv="Doslo je do promjene na sajtu",sadrzaj=link,datum=timezone.now())
         subject = 'Desila se promjena na sajtu'
         message = ' {} '.format(link)
         email_from = settings.EMAIL_HOST_USER
-        recipient_list = ['andrijavojnovicpa@gmail.com', ]
+        recipient_list = ["{}".format(korisnik.email), ]
         send_mail(subject, message, email_from, recipient_list)
-        print("prosao")
+
 
 
 def home(request):
