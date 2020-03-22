@@ -20,7 +20,10 @@ def tag_visible(element):
 
 @background(schedule=10)
 def obavjestenje(link,username):
-    html = urllib.request.urlopen(link)
+    try:
+        html = urllib.request.urlopen(link)
+    except:
+        return
     soup = BeautifulSoup(html, 'html.parser')
     texts = soup.findAll(text=True)
     visible_texts = filter(tag_visible, texts)
@@ -101,10 +104,15 @@ def register(request):
     return render(request,"korisnik/registration.html",{})
 
 def helpRegister(request):
-    objekat = Korisnik.objects.create(firstName =request.POST['fname'],
-                        lastName = request.POST['lname'],
-                        username =request.POST['username'],
-                        password = request.POST['pwd'],
-                        email = request.POST['email'])
-    objekat.save()
-    return HttpResponseRedirect(reverse('korisnik:home'))
+    try:
+        obj = Korisnik.objects.get(username = request.POST['username'])
+        print(obj.username)
+        return HttpResponseRedirect(reverse('korisnik:register'))
+    except:
+        objekat = Korisnik.objects.create(firstName =request.POST['fname'],
+                            lastName = request.POST['lname'],
+                            username =request.POST['username'],
+                            password = request.POST['pwd'],
+                            email = request.POST['email'])
+        objekat.save()
+        return HttpResponseRedirect(reverse('korisnik:home'))

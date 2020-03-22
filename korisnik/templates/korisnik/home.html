@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Obavjestenje</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Home page</title>
     <style type="text/css">
     .container {
         position: fixed;
@@ -29,12 +29,12 @@
     <div class="input-group mb-3">
   <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" name="pwd" id="pwd">
 </div>
-    <input type="submit" class="btn btn-primary" value="Prijavi se"><br>
+    <input type="submit" class="btn btn-primary" value="Login"><br>
     <br>
 </form>
 <form action ="{% url 'korisnik:register' %}" method="post">
     {%csrf_token%}
-    <input type="submit" class="btn btn-secondary" value = "Registruj se">
+    <input type="submit" class="btn btn-secondary" value = "Register">
 </form>
         </div>
         <div class="col-sm">
