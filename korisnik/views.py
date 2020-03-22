@@ -41,6 +41,8 @@ def obavjestenje(link,username):
         email_from = settings.EMAIL_HOST_USER
         recipient_list = ["{}".format(korisnik.email), ]
         send_mail(subject, message, email_from, recipient_list)
+        stranica.staroStanje=tekst
+        stranica.save()
 
 
 
