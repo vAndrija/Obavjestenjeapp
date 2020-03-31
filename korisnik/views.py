@@ -55,6 +55,11 @@ def home(request):
 
 def adding(request,username):
     objekat=Korisnik.objects.get(username=username)
+    try:
+        staranica = objekat.stranica_set.get(link=request.POST['link'])
+        return HttpResponseRedirect(reverse('korisnik:logged', args=(username,)))
+    except:
+        pass
     objekat.stranica_set.create(link = request.POST['link'])
     obavjestenje(request.POST['link'],username, schedule=60,repeat=10)
 
