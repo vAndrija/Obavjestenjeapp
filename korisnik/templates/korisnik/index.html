@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="{% static 'korisnik/assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'korisnik/assets/fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'korisnik/assets/css/Features-Boxed.css' %}">
+    <link rel="stylesheet" href="{% static 'korisnik/assets/css/Newsletter-Subscription-Form.css' %}">
+    <link rel="stylesheet" href="{% static 'korsnik/assets/css/styles.css' %}">
+</head>
+
+<body>
+    <div class="features-boxed">
+        <div class="container">
+            <div class="intro">
+                <h2 class="text-center">Home</h2>
+            </div>
+            <div class="row justify-content-center features">
+                <div class="col-sm-6 col-md-5 col-lg-4 item">
+                    <div class="box"><i class="fa fa-plus icon"></i>
+                        <h3 class="name">Dodavanje linkova</h3>
+                        <form class="form-inline" method="post">
+                            <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Your Email"></div>
+                            <div class="form-group"><button class="btn btn-primary" type="submit">Dodaj novi link</button></div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-5 col-lg-4 item">
+                    <div class="box"><i class="fa fa-external-link icon"></i>
+                        <h3 class="name">Aktivni linkovi</h3><button class="btn btn-primary" type="submit">Izbrisi link</button></div>
+                </div>
+                <div class="col-sm-6 col-md-5 col-lg-4 item">
+                    <div class="box"><i class="fa fa-envelope-o icon"></i>
+                        <h3 class="name">Aktivna obavjestenja</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
