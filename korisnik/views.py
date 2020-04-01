@@ -50,7 +50,7 @@ def obavjestenje(link,username):
 
 
 def home(request):
-    return render(request,"korisnik/home1.html",{})
+    return render(request,"korisnik/home.html",{})
 
 
 def adding(request,username):
@@ -106,7 +106,7 @@ def logged(request,username):
                                                    'objekat':objekat})
 
 def register(request):
-    return render(request,"korisnik/registration.html",{})
+    return render(request,"korisnik/registrationa.html",{})
 
 def helpRegister(request):
     try:

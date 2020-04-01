@@ -1,54 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+{% load static %}
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Home page</title>
-    <style type="text/css">
-    .container {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="{% static 'korisnik/homea/bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'korisnik/homea/fonts/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'korisnik/homea/css/Login-Form-Dark.css' %}">
+    <link rel="stylesheet" href="{% static 'korisnik/homea/css/styles.css' %}">
 </head>
+
 <body>
-<div class = "container">
-    <div class="row">
-        <div class="col-sm">
-<form action="{% url 'korisnik:help'%}" method="post">
-    {% csrf_token %}
-  <label for="username">Username:</label><br>
-    <div class="input-group mb-3">
-  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" name="username" id="username">
-</div>
-     <label for="pwd">Password:</label><br>
-    <div class="input-group mb-3">
-  <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" name="pwd" id="pwd">
-</div>
-    <input type="submit" class="btn btn-primary" value="Login"><br>
-    <br>
-</form>
-<form action ="{% url 'korisnik:register' %}" method="post">
-    {%csrf_token%}
-    <input type="submit" class="btn btn-secondary" value = "Register">
-</form>
-        </div>
-        <div class="col-sm">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRF8q_A1BoX8cWTfCM53W8_QNRHh_sBU6M2C579dzKuxEu60LxW" class="rounded mx-auto d-block" alt="W3Schools.com">
-         </div>
-        </div>
+    <div class="login-dark">
+        <form method="post" action="{% url 'korisnik:help'%}">
+             {% csrf_token %}
+            <h2 class="sr-only">Login Form</h2>
+            <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
+            <div class="form-group"><input class="form-control" type="text" name="username" placeholder="Korisnicko ime"></div>
+            <div class="form-group"><input class="form-control" type="password" name="pwd" placeholder="Lozinka"></div>
+            <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Prijavi se</button></div>
+            <a class="forgot" href="{% url 'korisnik:register' %}">Novi korisnik?</a>
+            <a class="forgot" href="#">Zaboravljena lozinka?</a></form>
     </div>
-
-
-
-
-
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
+
 </html>

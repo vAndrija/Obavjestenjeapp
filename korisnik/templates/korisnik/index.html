@@ -17,25 +17,37 @@
     <div class="features-boxed">
         <div class="container">
             <div class="intro">
-                <h2 class="text-center">Home</h2>
+                <h2 class="text-center">{{username}}</h2>
             </div>
             <div class="row justify-content-center features">
                 <div class="col-sm-6 col-md-5 col-lg-4 item">
                     <div class="box"><i class="fa fa-plus icon"></i>
                         <h3 class="name">Dodavanje linkova</h3>
-                        <form class="form-inline" method="post">
-                            <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Your Email"></div>
+                        <form class="form-inline" method="post" action="{% url 'korisnik:adding' username %}">
+                            {%csrf_token%}
+                            <div class="form-group"><input class="form-control" type="text" name="link" placeholder="Link"></div>
                             <div class="form-group"><button class="btn btn-primary" type="submit">Dodaj novi link</button></div>
                         </form>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-5 col-lg-4 item">
                     <div class="box"><i class="fa fa-external-link icon"></i>
-                        <h3 class="name">Aktivni linkovi</h3><button class="btn btn-primary" type="submit">Izbrisi link</button></div>
+                        <h3 class="name">Aktivni linkovi</h3>
+                        <form action="{% url 'korisnik:delatingRedirecting' username %}" method="get">
+                            {% for stranica in objekat.stranica_set.all %}
+                                <a href={{stranica.link}}>{{stranica.link}}</a><br>
+                                            {%endfor%}
+                            <button class="btn btn-primary" type="submit">Izbrisi link</button></form></div>
                 </div>
                 <div class="col-sm-6 col-md-5 col-lg-4 item">
                     <div class="box"><i class="fa fa-envelope-o icon"></i>
                         <h3 class="name">Aktivna obavjestenja</h3>
+                        {% for obavjestenje in objekat.obavjestenje_set.all %}
+
+                            <h6>{{obavjestenje.naziv}}</h6>
+                        <p>{{obavjestenje.datum}}</p><hr>
+
+    {%endfor%}
                     </div>
                 </div>
             </div>
