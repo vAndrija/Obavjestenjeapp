@@ -46,7 +46,8 @@
             </div>
         <div class="col-4">
     <h6>Obavjestenja</h6>
-    {% for obavjestenje in objekat.obavjestenje_set.all %}
+    {% for obavjestenje in obavjestenja %}
+
     <br>
     <h3>{{obavjestenje.naziv}}</h3>
     <h4>{{obavjestenje.datum}}</h4>

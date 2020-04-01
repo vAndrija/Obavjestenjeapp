@@ -42,7 +42,7 @@
                 <div class="col-sm-6 col-md-5 col-lg-4 item">
                     <div class="box"><i class="fa fa-envelope-o icon"></i>
                         <h3 class="name">Aktivna obavjestenja</h3>
-                        {% for obavjestenje in objekat.obavjestenje_set.all %}
+                        {% for obavjestenje in obavjestenja %}
 
                             <h6>{{obavjestenje.naziv}}</h6>
                         <p>{{obavjestenje.datum}}</p><hr>
