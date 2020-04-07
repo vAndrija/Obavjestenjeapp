@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'background_task',
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
@@ -79,6 +80,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'projekat.wsgi.application'
 
+SCHEDULER_CONFIG = {
+    "apscheduler.jobstores.default": {
+        "class": "django_apscheduler.jobstores:DjangoJobStore"
+    },
+    'apscheduler.executors.processpool': {
+        "type": "threadpool"
+    },
+}
+SCHEDULER_AUTOSTART = True
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
