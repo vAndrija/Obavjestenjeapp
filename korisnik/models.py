@@ -55,7 +55,7 @@ try:
     # 'cron' mode loop, Monday to Friday, 9:30:10 every day, id is the work ID as a tag
     # ('scheduler',"interval", seconds=1) # cycle with interval, execute once every second
     #@register_job(scheduler, 'interval',seconds=10)
-    @scheduler.scheduled_job('interval',seconds=30)
+    @scheduler.scheduled_job('interval',minutes=1)
     def test_job():
         print("Pocetka funckije")
         for object in Korisnik.objects.all():
