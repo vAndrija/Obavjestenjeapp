@@ -4,7 +4,7 @@ import urllib.request
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events, register_job
 # Create your models here.
-
+from django_apscheduler.models import DjangoJob
 from bs4 import BeautifulSoup, Comment
 from django.core.mail import send_mail
 from django.utils import timezone
@@ -25,6 +25,7 @@ class Stranica(models.Model):
     link = models.CharField(max_length=200,default = '')
     korisnik = models.ForeignKey(Korisnik,on_delete=models.CASCADE)
     staroStanje = models.TextField(default='nista')
+    posljedniMejl = models.DateTimeField(null=True)
     def __str__(self):
         return "{}".format(self.link)
 
@@ -32,7 +33,7 @@ class Obavjestenje(models.Model):
     korisnik = models.ForeignKey(Korisnik, on_delete=models.CASCADE)
     naziv = models.CharField(max_length=100)
     sadrzaj = models.CharField(max_length=100)
-    datum = models.DateTimeField('vrijeme promjene')
+    datum = models.DateTimeField(null=True)
     def __str__(self):
         return "{}".format(self.naziv)
 
@@ -51,45 +52,53 @@ try:
     # Scheduler uses DjangoJobStore()
     scheduler.add_jobstore(DjangoJobStore(), "default")
 
+    if(len(DjangoJob.objects.all())==0):
+        # 'cron' mode loop, Monday to Friday, 9:30:10 every day, id is the work ID as a tag
+        # ('scheduler',"interval", seconds=1) # cycle with interval, execute once every second
+        #@register_job(scheduler, 'interval',seconds=10)
+        @scheduler.scheduled_job('interval',minutes=1)
+        def test_job():
+            for object in Korisnik.objects.all():
+                for stranica in object.stranica_set.all():
+                    try:
+                        html = urllib.request.urlopen(stranica.link)
+                    except:
+                         return
+                    soup = BeautifulSoup(html, 'html.parser')
+                    texts = soup.findAll(text=True)
+                    visible_texts = filter(tag_visible, texts)
 
-    # 'cron' mode loop, Monday to Friday, 9:30:10 every day, id is the work ID as a tag
-    # ('scheduler',"interval", seconds=1) # cycle with interval, execute once every second
-    #@register_job(scheduler, 'interval',seconds=10)
-    @scheduler.scheduled_job('interval',minutes=1)
-    def test_job():
-        print("Pocetka funckije")
-        for object in Korisnik.objects.all():
-            print("usao u korisnika")
-            for stranica in object.stranica_set.all():
-                print("usao u straniccu")
-                try:
-                    html = urllib.request.urlopen(stranica.link)
-                except:
-                     return
-                soup = BeautifulSoup(html, 'html.parser')
-                texts = soup.findAll(text=True)
-                visible_texts = filter(tag_visible, texts)
+                    tekst = u" ".join(t.strip() for t in visible_texts)
 
-                tekst = u" ".join(t.strip() for t in visible_texts)
+                    if (stranica.staroStanje == 'nista'):
+                        stranica.staroStanje = tekst
+                        stranica.save()
 
-                if (stranica.staroStanje == 'nista'):
-                    stranica.staroStanje = tekst
-                    stranica.save()
+                    elif (stranica.staroStanje != tekst):
+                        try:
+                            brojsekundi = timezone.now()-stranica.posljedniMejl
+                            brojminuta  = brojsekundi.total_seconds()/60
+                            if(brojminuta<=20):
+                                return
+                        except Exception as e:
 
-                elif (stranica.staroStanje != tekst):
-                    object.obavjestenje_set.create(naziv="Doslo je do promjene na sajtu", sadrzaj=stranica.link,
-                                                     datum=timezone.now())
-                    subject = 'Desila se promjena na sajtu'
-                    message = ' {} '.format(stranica.link)
-                    email_from = settings.EMAIL_HOST_USER
-                    recipient_list = ["{}".format(object.email), ]
-                    send_mail(subject, message, email_from, recipient_list)
-                    stranica.staroStanje = tekst
-                    stranica.save()
+                            print("Ovo nema obavjestenja jos")
+                            print(e)
+                            pass
+                        object.obavjestenje_set.create(naziv="Doslo je do promjene na sajtu", sadrzaj=stranica.link,
+                                                         datum=timezone.now())
+                        subject = 'Desila se promjena na sajtu'
+                        message = ' {} '.format(stranica.link)
+                        email_from = settings.EMAIL_HOST_USER
+                        recipient_list = ["{}".format(object.email), ]
+                        send_mail(subject, message, email_from, recipient_list)
+                        stranica.staroStanje = tekst
+                        stranica.posljedniMejl=timezone.now()
+                        stranica.save()
 
-    register_events(scheduler)
-# Scheduler starts
-    scheduler.start()
+        register_events(scheduler)
+    # Scheduler starts
+        scheduler.start()
 except Exception as e:
     print(e)
 

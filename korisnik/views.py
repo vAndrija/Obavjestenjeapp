@@ -16,60 +16,6 @@ from .models import Korisnik, Stranica
 
 
 
-# def provjera_postojanja(link, username):
-#     for task in models.Task.objects.all():
-#         text = "{}".format(task.task_params)
-#         odvojeni = text.split(",")
-#         stranica = odvojeni[0].split('"')
-#         korisnik = odvojeni[1].split('"')
-#         if (username == korisnik[1] and link == stranica[1]):
-#             try:
-#                 vlasnik = Korisnik.objects.get(username=korisnik[1])
-#                 try:
-#                     nadjenaStranica = vlasnik.stranica_set.get(link=stranica[1])
-#                 except:
-#                     print("Treba da se izbrise")
-#                     task.delete()
-#                     return False
-#             except:
-#                 return False
-#
-#     return True
-#
-#
-# @background(schedule=20)
-# def obavjestenje(link, username):
-#     povratna = provjera_postojanja(link, username)
-#     if (not povratna):
-#         return
-#     print("Nit je prosla sa {}".format(link))
-#     try:
-#         html = urllib.request.urlopen(link)
-#     except:
-#         return
-#     soup = BeautifulSoup(html, 'html.parser')
-#     texts = soup.findAll(text=True)
-#     visible_texts = filter(tag_visible, texts)
-#     korisnik = Korisnik.objects.get(username=username)
-#     tekst = u" ".join(t.strip() for t in visible_texts)
-#     try:
-#         stranica = korisnik.stranica_set.get(link=link)
-#     except:
-#         return
-#     if (stranica.staroStanje == 'nista'):
-#         stranica.staroStanje = tekst
-#         stranica.save()
-#
-#     elif (stranica.staroStanje != tekst):
-#         korisnik.obavjestenje_set.create(naziv="Doslo je do promjene na sajtu", sadrzaj=link, datum=timezone.now())
-#         subject = 'Desila se promjena na sajtu'
-#         message = ' {} '.format(link)
-#         email_from = settings.EMAIL_HOST_USER
-#         recipient_list = ["{}".format(korisnik.email), ]
-#         send_mail(subject, message, email_from, recipient_list)
-#         stranica.staroStanje = tekst
-#         stranica.save()
-
 
 
 def home(request):
@@ -86,8 +32,10 @@ def adding(request, username):
     except:
         pass
     objekat.stranica_set.create(link=request.POST['link'])
+    stranica = objekat.stranica_set.get(link=request.POST['link'])
+    #stranica.posljedniMejl=timezone.now()
 
-    #obavjestenje(request.POST['link'], username, repeat=40)
+
 
     return HttpResponseRedirect(reverse('korisnik:logged', args=(username,)))
 
