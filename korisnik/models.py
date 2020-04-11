@@ -9,6 +9,14 @@ from bs4 import BeautifulSoup, Comment
 from django.core.mail import send_mail
 from django.utils import timezone
 from projekat import settings
+from datetime import datetime, timedelta
+
+def default_start_time():
+    now = datetime.now()
+    start = now.replace(year=2000)
+    return start
+
+
 class Korisnik(models.Model):
     username = models.CharField(max_length=20)
     password = models.CharField(max_length=100)
@@ -25,7 +33,7 @@ class Stranica(models.Model):
     link = models.CharField(max_length=200,default = '')
     korisnik = models.ForeignKey(Korisnik,on_delete=models.CASCADE)
     staroStanje = models.TextField(default='nista')
-    posljedniMejl = models.DateTimeField(null=True)
+    posljedniMejl = models.DateTimeField(default=default_start_time)
     def __str__(self):
         return "{}".format(self.link)
 
@@ -75,15 +83,15 @@ try:
                         stranica.save()
 
                     elif (stranica.staroStanje != tekst):
-                        try:
+                        if(stranica.posljedniMejl.year!=2000):
+
                             brojsekundi = timezone.now()-stranica.posljedniMejl
                             brojminuta  = brojsekundi.total_seconds()/60
                             if(brojminuta<=20):
                                 return
-                        except Exception as e:
+                        else :
 
                             print("Ovo nema obavjestenja jos")
-                            print(e)
                             pass
                         object.obavjestenje_set.create(naziv="Doslo je do promjene na sajtu", sadrzaj=stranica.link,
                                                          datum=timezone.now())

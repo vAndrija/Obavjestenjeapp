@@ -33,7 +33,7 @@ def adding(request, username):
         pass
     objekat.stranica_set.create(link=request.POST['link'])
     stranica = objekat.stranica_set.get(link=request.POST['link'])
-    #stranica.posljedniMejl=timezone.now()
+
 
 
 
